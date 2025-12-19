@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيد ميلاد أغلى الناس 🎂</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #ffb3c1;
+            --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            font-family: 'Cairo', sans-serif;
+            overflow: hidden;
+        }
+
+        /* الكارت الرئيسي */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 350px;
+            width: 85%;
+            position: relative;
+            z-index: 2;
+            border: 4px solid #fff;
+        }
+
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 5px solid var(--primary-pink);
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        .btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            transition: 0.3s;
+        }
+        .btn:hover{
+            background: transparent;
+            border: 2px solid salmon;
+            color: #ff4d6d;
+            transform: scale(1.05);
+        }
+
+        /* الأوفرلاي (الطبقة اللي بتظهر) */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            overflow-y: auto;
+        }
+
+        .overlay.active { display: flex; }
+
+        .content-wrapper {
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            transform: scale(0);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .overlay.active .content-wrapper { transform: scale(1); }
+
+        /* ستايل الصور */
+        .photos-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .photos-container img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 3px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        .message-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 25px;
+            border-bottom: 8px solid var(--primary-pink);
+        }
+
+        /* زرار التحكم في الموسيقى */
+        .music-control-btn {
+            background: #6b3333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 15px 0;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .music-control-btn.paused { background: var(--primary-pink); }
+
+        .close-btn {
+            background: #eee;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* القلوب الطائرة */
+        .bg-hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .floating-heart { position: absolute; color: rgba(255, 77, 109, 0.4); animation: float 5s linear infinite; }
+        @keyframes float {
+            0% { transform: translateY(110vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-hearts" id="hearts-container"></div>
+
+    <audio id="birthday-song" src="song.mp3" autoplay loop></audio>
+
+    <div class="card">
+        <img src="IMG-20251204-WA0005.jpg" alt="Princess" class="profile-img">
+        <h1>كل سنة وانتي منورة حياتي</h1>
+        <p>20/12/2006</p>
+        <p>النهاردة مش يوم عادي، النهاردة عيد ميلاد أجمل بنت شافتها عيني..</p>
+        <button class="btn" onclick="openMessage()">دوسي هنا عشان تشوفي المفاجأة 💌</button>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="content-wrapper">
+            <div class="photos-container">
+                <img src="1.jpg" alt="ذكرياتنا">
+                <img src="2.jpg" alt="ذكرياتنا">
+                <img src="3.jpg" alt="ذكرياتنا">
+                <img src="4.jpg" alt="ذكرياتنا">
+            </div>
+
+            <div class="message-card">
+                <h2>رسالة من قلبي ليكي ❤</h2>
+                <p>
+                    يا أغلى إنسانة في حياتي، <br>
+                    كل سنة وأنتي الضحكة اللي بتفرحني، <br>
+                     . والسند اللي مقويني ويومى الى مبيكملش غير بيكى <br>
+                      كل سنه وانتى حياتى كل سنه وحنا مكملين مع بعض كل سنه واحناديما كايدين الى انتى عارفاهم 
+                      وفى الختام:لأجمل "كوتي موتي" في الدنيا.. كل سنة وأنتي ملكة قلبي، كل سنة وأنتي البنت اللي خطفت عيني من أول لحظة. في يوم ميلادك، بتمنى لك كل السعادة اللي في الكون، وتفضلي دايماً جنبي ومعايا.. بحبك يا أميرتي.". <br>
+                    <b>بحبك يا "كوتي موتي" بتاعتي! 💍👸</b>
+                </p>
+                
+                <button class="music-control-btn" id="music-toggle" onclick="toggleMusic()">إيقاف الموسيقى ⏸</button>
+                <br>
+                <button class="close-btn" onclick="closeMessage()">اغلاق x</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const song = document.getElementById('birthday-song');
+        const musicBtn = document.getElementById('music-toggle');
+
+        // وظيفة القلوب الطائرة
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerText = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.getElementById('hearts-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+
+        // تشغيل وإيقاف الموسيقى
+        function toggleMusic() {
+            if (song.paused) {
+                song.play();
+                musicBtn.innerHTML = "إيقاف الموسيقى ⏸";
+                musicBtn.classList.remove('paused');
+            } else {
+                song.pause();
+                musicBtn.innerHTML = "تشغيل الموسيقى ▶";
+                musicBtn.classList.add('paused');
+            }
+        }
+
+        function openMessage() {
+            document.getElementById('overlay').classList.add('active');
+            song.play().catch(e => console.log("تفاعل مطلوب"));
+            
+            // احتفالية قلوب زيادة
+            for(let i=0; i<15; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        function closeMessage() {
+            document.getElementById('overlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
